@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="40dp"
+    android:layout_width="match_parent">
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/edit_recipe"
+        android:title="Edit Recipe"
+        android:icon="@drawable/baseline_edit_white_48"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/delete_recipe"
+        android:title="Delete"
+        android:icon="@drawable/outline_delete_white_48"
+        app:showAsAction="always"/>
+</menu>

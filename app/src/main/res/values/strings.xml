@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">RecipeApp</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="new_recipe">New Recipe</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="addIngredient">Add Ingredient</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="ingredient_already_added">You already added that ingredient!</string>
+    <string name="ingredient_no_name">"Please name your ingredients..."</string>
+    <string name="name_no_text">"The name field can not be empty!"</string>
+    <string name="description_no_text">"The description field can not be empty!"</string>
+    <string name="ingredients_empty">"Add some ingredients!"</string>
+    <string name="ingredients">Ingredients</string>
+</resources>
