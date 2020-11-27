@@ -1,15 +1,25 @@
 package com.example.recipeapp
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toFile
 import androidx.core.view.get
 import androidx.core.view.size
 import androidx.room.Room
@@ -18,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_new_recipe.*
 import kotlinx.android.synthetic.main.ingredient_row.view.*
 import java.lang.Exception
+import java.net.URI
 import kotlin.concurrent.thread
 
 open class NewRecipeActivity : AppCompatActivity() {
@@ -34,11 +45,75 @@ open class NewRecipeActivity : AppCompatActivity() {
 
     protected lateinit var saveButton: View
 
+    protected  var image: Uri? = null
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_new, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId){
+        R.id.add_image ->{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_DENIED){
+                    //permission denied
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    //show popup to request runtime permission
+                    requestPermissions(permissions, PERMISSION_CODE);
+                }
+                else{
+                    //permission already granted
+                    pickImageFromGallery();
+                }
+            }
+            else{
+                //system OS is < Marshmallow
+                pickImageFromGallery();
+            }
+            true
+        }
+        else ->{
+            super.onOptionsItemSelected(item)
+        }
+
+    }
+
+    companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
+    }
+
+
+    //handle requested permission result
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            PERMISSION_CODE -> {
+                if (grantResults.size >0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    pickImageFromGallery()
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    //handle result of picked image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+            showSnack(saveButton, "Image added successfully!")
+            //image_view.setImageURI(data?.data)
+            image = data!!.data!!
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +139,6 @@ open class NewRecipeActivity : AppCompatActivity() {
         save_button.setOnClickListener {
             if (checkForValidity()) {
                 persistRecipeWithIngredients()
-                finish();
             }
         }
 
@@ -80,9 +154,13 @@ open class NewRecipeActivity : AppCompatActivity() {
         ).build()
     }
 
-    protected open fun init(){
-
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
     }
+
 
     /**
      * Hozzáad egy hozzávalót a hozzávalók listájához
@@ -162,7 +240,11 @@ open class NewRecipeActivity : AppCompatActivity() {
             // Create the references between ingredients and recipes
             persistReferences(recipeId, ingredientIds)
 
+            persistImage(recipeId)
+
             Listeners.getInstance().onRecipeCreated(recipeId)
+
+            finish();
         }
     }
 
@@ -211,6 +293,19 @@ open class NewRecipeActivity : AppCompatActivity() {
             database.recipeDao().insertCrossRefs(crossRefs[i])
             Log.i("TAG", "Persisted one ref")
         }
+    }
+
+    protected fun persistImage(recipeId: Long){
+        val filename = recipeId.toString()
+        if(image != null){
+            val fileContent = image!!
+            this.openFileOutput(filename, Context.MODE_PRIVATE).use{
+                var inputStream = this.contentResolver.openInputStream(fileContent)
+                var byteArray = inputStream!!.readBytes()
+                it.write(byteArray)
+            }
+        }
+
     }
 
     /**

@@ -37,7 +37,6 @@ class EditRecipeActivity : NewRecipeActivity() {
         save_button_e.setOnClickListener {
             if (checkForValidity()) {
                 persistRecipeWithIngredients()
-                finish();
             }
         }
 
@@ -51,7 +50,7 @@ class EditRecipeActivity : NewRecipeActivity() {
     }
 
     /**
-     * Betölti a recept adatait az adatbázisból az intentben kapott név alapján
+     * Betölti a recept adatait az adatbázisból az intentben kapott id alapján
      */
     private fun loadData(){
         val id = intent.getLongExtra("id",-1)
@@ -92,11 +91,12 @@ class EditRecipeActivity : NewRecipeActivity() {
             database.recipeDao().updateRecipes(recipe) // Frissíti a receptet (Leírás, Név)
             ingredientIds = persistIngredients()       // Eltárolja az új hozzávalókat
             persistReferences(recipeId, ingredientIds) // Eltárolja az új kapcsolatokat
-            deleteLostReferences(recipeId, previousIngredients, ingredientIds)
+            deleteLostReferences(recipeId, previousIngredients, ingredientIds) // Kitörli azokat a kapcsolatokat amik a törölt hozzávalókra vonatkoztak
+            persistImage(recipeId)
+            val recipes = database.recipeDao().getAll()
 
-
-
-            Listeners.getInstance().onRecipeUpdated(recipeId)
+            Listeners.getInstance().onRecipeUpdated(recipeId, recipes)
+            finish();
         }
     }
 

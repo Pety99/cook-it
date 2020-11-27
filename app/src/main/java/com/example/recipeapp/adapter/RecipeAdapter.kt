@@ -2,6 +2,7 @@ package com.example.recipeapp.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,14 @@ import android.widget.*
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipeapp.Listeners
 import com.example.recipeapp.NewRecipeActivity
 import com.example.recipeapp.R
 import com.example.recipeapp.ViewRecipeActivity
 import com.example.recipeapp.data.Recipe
 import com.example.recipeapp.data.RecipeWithIngredients
+import java.io.File
+import kotlin.concurrent.thread
 
 class RecipeAdapter(private val listener: RecipeClickListener) :
     RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
@@ -35,6 +39,9 @@ class RecipeAdapter(private val listener: RecipeClickListener) :
         //holder.descriptionTextView.text = item.recipe.description
         holder.iconImageView.setImageResource(getImageResource())
         holder.item = item
+
+        val uri = loadUri(holder.iconImageView, item.recipe.recipeId!!)
+        holder.iconImageView.setImageURI(uri);
     }
 
     override fun getItemCount(): Int {
@@ -98,5 +105,16 @@ class RecipeAdapter(private val listener: RecipeClickListener) :
             }
         }
         return -1
+    }
+
+    /**
+     * Betölt egy képet
+     */
+    private fun loadUri(view: View, id: Long): Uri?{
+        val file = File(view.context.filesDir, id.toString())
+        if(file.exists()){
+            return Uri.fromFile(file)
+        }
+        return null;
     }
 }

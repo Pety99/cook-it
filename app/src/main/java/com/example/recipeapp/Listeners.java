@@ -1,5 +1,11 @@
 package com.example.recipeapp;
+import androidx.room.Update;
+
+import com.example.recipeapp.data.Recipe;
 import com.example.recipeapp.data.RecipeWithIngredients;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ezen az osztályon keresztül lehet kommunikálni activityk között
@@ -7,18 +13,20 @@ import com.example.recipeapp.data.RecipeWithIngredients;
  * akkor a MainActivity tud értesülni ezekről a változásokról
  */
 public class Listeners {
-    public interface ChangeListener {
+    public interface MainListener {
         void onRecipeDeleted(RecipeWithIngredients recipe);
         void onRecipeCreated(Long id);
+        void onRecipeUpdated(List<RecipeWithIngredients> recipes);
     }
-    public interface UpdateListener{
+    public interface ViewListener{
         void onRecipeUpdated(Long id);
+
     }
 
     private static Listeners Instance;
 
-    private ChangeListener changeListener;
-    private UpdateListener updateListener;
+    private MainListener changeListener;
+    private ViewListener updateListener;
 
     private Listeners() {}
 
@@ -37,7 +45,7 @@ public class Listeners {
      * Beállítja a changeListener objektumot
      * @param listener
      */
-    public void setChangeLisetner(ChangeListener listener) {
+    public void setChangeLisetner(MainListener listener) {
         changeListener = listener;
     }
 
@@ -45,7 +53,7 @@ public class Listeners {
      * Beállítja az updateListener objektumot
      * @param listener
      */
-    public void setUpdateListener(UpdateListener listener){
+    public void setUpdateListener(ViewListener listener){
         updateListener = listener;
     }
 
@@ -69,9 +77,10 @@ public class Listeners {
         }
     }
 
-    public void onRecipeUpdated(Long id){
+    public void onRecipeUpdated(Long id, List<RecipeWithIngredients> recipes){
         if(updateListener != null){
             updateListener.onRecipeUpdated(id);
+            changeListener.onRecipeUpdated(recipes);
         }
     }
 }

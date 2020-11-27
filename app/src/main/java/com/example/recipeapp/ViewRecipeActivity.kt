@@ -1,6 +1,7 @@
 package com.example.recipeapp
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +12,14 @@ import com.example.recipeapp.data.RecipeListDatabase
 import com.example.recipeapp.data.RecipeWithIngredients
 import kotlinx.android.synthetic.main.activity_view_recipe.*
 import kotlinx.android.synthetic.main.ingredient_row.view.*
+import java.io.File
 import kotlin.concurrent.thread
 
-class ViewRecipeActivity : AppCompatActivity(), Listeners.UpdateListener {
+class ViewRecipeActivity : AppCompatActivity(), Listeners.ViewListener {
 
     lateinit var database: RecipeListDatabase
     lateinit var recipeWithIngredients:RecipeWithIngredients
+    var uri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_recipe)
@@ -27,7 +30,6 @@ class ViewRecipeActivity : AppCompatActivity(), Listeners.UpdateListener {
             RecipeListDatabase::class.java,
             "recipe-list"
         ).build()
-
         loadData(intent.getLongExtra("id", -1))
     }
 
@@ -68,8 +70,9 @@ class ViewRecipeActivity : AppCompatActivity(), Listeners.UpdateListener {
      */
     private fun loadData(id: Long){
         thread{
+            uri = loadUri(intent.getLongExtra("id", -1))
             recipeWithIngredients = database.recipeDao().getRecipe(id)
-            runOnUiThread(){
+            runOnUiThread{
                 initView(recipeWithIngredients)
             }
         }
@@ -107,6 +110,18 @@ class ViewRecipeActivity : AppCompatActivity(), Listeners.UpdateListener {
         recipe_title.text = recipeWithIngredients.recipe.name
         description_content.text = recipeWithIngredients.recipe.description
 
+        if(uri != null){
+            val scale = this.resources.displayMetrics.density
+            val pixels = (200 * scale ).toInt()
+            display_image.layoutParams.height = pixels
+            display_image.setImageURI(null)       // Azért kell mert ha frissül a kép az uri mögött és azt újra beállítja nem frissíti a képet
+            display_image.setImageURI(uri)        // Betölti a képet ha van
+        }
+        else{
+            display_image.layoutParams.height = 0 // Ha nem jelenik meg kép ne töltse ki a helyet
+        }
+
+
         list_of_ingredients.removeAllViews() // Ki kell üríteni ha már van benne valami
         for(i in 0 until recipeWithIngredients.ingredients.size){
             val rowItem = LayoutInflater.from(this).inflate(R.layout.ingredient_row_view, null)
@@ -114,7 +129,16 @@ class ViewRecipeActivity : AppCompatActivity(), Listeners.UpdateListener {
             list_of_ingredients.addView(rowItem)
         }
     }
-
+    /**
+     * Betölt egy képet
+     */
+    private fun loadUri(id: Long): Uri?{
+        val file = File(this.filesDir, id.toString())
+        if(file.exists()){
+            return Uri.fromFile(file)
+        }
+    return null;
+    }
     /**
      * Frissíti a tartalmat ha változtatták a receptet
      */

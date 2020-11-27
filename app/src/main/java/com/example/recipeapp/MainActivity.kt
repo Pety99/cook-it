@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity(),RecipeAdapter.RecipeClickListener, Listeners.ChangeListener {
+class MainActivity : AppCompatActivity(),RecipeAdapter.RecipeClickListener, Listeners.MainListener{
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecipeAdapter
@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity(),RecipeAdapter.RecipeClickListener, List
 
         // Beállítja hogy reagálni tudjon eseményekre
         Listeners.getInstance().setChangeLisetner(this)
-
         setSupportActionBar(toolbar)
         fab.setOnClickListener{
             val recipeIntent = Intent(this, NewRecipeActivity::class.java)
@@ -99,5 +98,14 @@ class MainActivity : AppCompatActivity(),RecipeAdapter.RecipeClickListener, List
 
     override fun onRecipeDeleted(recipeWithIngredients: RecipeWithIngredients) {
         adapter.deleteItem(recipeWithIngredients)
+    }
+
+    override fun onRecipeUpdated(recipes: MutableList<RecipeWithIngredients>?) {
+        thread {
+            runOnUiThread{
+                adapter.update(recipes!!)
+            }
+        }
+
     }
 }
