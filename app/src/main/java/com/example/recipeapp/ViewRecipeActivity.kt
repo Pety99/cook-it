@@ -46,7 +46,7 @@ class ViewRecipeActivity : AppCompatActivity(), Listeners.ViewListener {
             // User chose the "Favorite" action, mark the current item
             // as a favorite...
             val editIntent = Intent(this, EditRecipeActivity::class.java)
-            editIntent.putExtra("title", "Edit Recipe")
+            editIntent.putExtra("title", getString(R.string.edit_recipe))
             editIntent.putExtra("id", recipeWithIngredients.recipe.recipeId)
             startActivity(editIntent)
             true

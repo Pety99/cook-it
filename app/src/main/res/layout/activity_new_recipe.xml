@@ -6,33 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dip">
+    android:paddingTop="24dip"
+    android:paddingRight="24dip"
+    android:paddingLeft="24dip">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="@string/name"/>
+        android:textSize="18sp"
+        android:text="@string/name"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <EditText
         android:id="@+id/recipe_name_edit"
         android:layout_width="match_parent"
+        android:textSize="16sp"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dip"
-        android:textSize="20sp"
-        android:text="@string/description"/>
+        android:layout_marginTop="10dip"
+        android:textSize="18sp"
+        android:text="@string/description"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <EditText
         android:id="@+id/recipe_description_edit"
         android:inputType="textMultiLine"
-        android:lines="8"
-        android:minLines="4"
+        android:lines="6"
+        android:minLines="6"
         android:gravity="top|left"
         android:maxLines="10"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:scrollbars="vertical" />
@@ -40,9 +46,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dip"
-        android:textSize="20sp"
-        android:text="@string/addIngredient"/>
+        android:layout_marginTop="10dip"
+        android:textSize="18sp"
+        android:text="@string/addIngredient"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,6 +61,7 @@
             android:id="@+id/ingredient_edit"
             android:layout_width="0dp"
             android:layout_weight="10"
+            android:textSize="16sp"
             android:layout_height="wrap_content"
             android:gravity="left" />
 
@@ -63,6 +71,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="center"
+            android:tint="@color/colorAccent"
             android:src="@drawable/baseline_add_circle_black_24" />
 
     </LinearLayout>
@@ -75,7 +84,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="13">
             <LinearLayout
                 android:id="@+id/list_of_ingredients"
@@ -84,6 +93,11 @@
                 android:orientation="vertical">
             </LinearLayout>
         </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDark"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,15 +109,20 @@
 
             <Button
                 android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textColor="#FFFFFF"
                 android:text="Cancel"
+                android:layout_marginTop="16dp"
                 />
             <Button
                 android:id="@+id/save_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textColor="#FFFFFF"
                 android:text="Save"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="16dp"
                 />
         </LinearLayout>
 

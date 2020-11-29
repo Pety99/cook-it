@@ -12,6 +12,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="new_recipe">New Recipe</string>
+    <string name="edit_recipe">Edit Recipe</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="addIngredient">Add Ingredient</string>
@@ -23,4 +24,7 @@
     <string name="description_no_text">"The description field can not be empty!"</string>
     <string name="ingredients_empty">"Add some ingredients!"</string>
     <string name="ingredients">Ingredients</string>
+    <string name="no_permission">Permission denied</string>
+    <string name="image_added">Image added successfully!</string>
+    <string name="got_it">Got it!</string>
 </resources>

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -100,7 +101,7 @@ open class NewRecipeActivity : AppCompatActivity() {
                 }
                 else{
                     //permission from popup denied
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.no_permission), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -110,7 +111,7 @@ open class NewRecipeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            showSnack(saveButton, "Image added successfully!")
+            showSnack(saveButton, getString(R.string.image_added))
             //image_view.setImageURI(data?.data)
             image = data!!.data!!
         }
@@ -334,10 +335,8 @@ open class NewRecipeActivity : AppCompatActivity() {
      * Mutat egy SnackBart egy szöveggeé
      */
     private fun showSnack(context: View, snackBarText: String) {
-        Snackbar.make(context, snackBarText, Snackbar.LENGTH_LONG)
-            .setAction("Got it!") {
-                // Responds to click on the action
-            }
+        Snackbar.make(context,  Html.fromHtml("<font color=\"#ffffff\">${snackBarText}</font>"), Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.got_it)) {}
             .show()
     }
 }

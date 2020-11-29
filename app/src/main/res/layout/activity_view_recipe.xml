@@ -21,12 +21,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dip"
-                android:textSize="36sp"
-                android:paddingTop="24dp"
+                android:textSize="30sp"
+                android:paddingTop="0dp"
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
-                android:paddingBottom="8dp"
-                android:textStyle="bold"/>
+                android:paddingBottom="24dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/display_image"
@@ -43,30 +44,31 @@
                 android:layout_marginTop="16dip"
                 android:textSize="24sp"
                 android:text="@string/description"
-                android:paddingTop="24dp"
+                android:paddingTop="8dp"
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
-                android:paddingBottom="8dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"/>
             <TextView
                 android:id="@+id/description_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dip"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:paddingLeft="24dp"
-                android:paddingRight="24dp" />
+                android:paddingRight="24dp"
+                android:lineSpacingExtra="5sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dip"
                 android:textSize="24sp"
                 android:text="@string/ingredients"
-                android:paddingTop="24dp"
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:paddingBottom="8dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,6 +83,8 @@
                     android:id="@+id/list_of_ingredients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingBottom="24dp"
                     android:orientation="vertical">
 
                 </LinearLayout>

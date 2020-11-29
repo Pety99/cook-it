@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(),RecipeAdapter.RecipeClickListener, List
         setSupportActionBar(toolbar)
         fab.setOnClickListener{
             val recipeIntent = Intent(this, NewRecipeActivity::class.java)
-            recipeIntent.putExtra("title", "New Recipe")
+            recipeIntent.putExtra("title", getString(R.string.new_recipe))
             startActivity(recipeIntent)
         }
 
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(),RecipeAdapter.RecipeClickListener, List
 
     private fun loadItemsInBackground() {
         thread {
-            Log.i("TAG", "loaded alli items")
+            Log.i("TAG", "loaded all items")
             val items = database.recipeDao().getAll()
             runOnUiThread {
                 adapter.update(items)
